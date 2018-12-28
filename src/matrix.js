@@ -30,17 +30,71 @@ const Matrix = (function(){
 
   }
 
+  /**===================================== 类的public方法 ================================**/
   /**
-   * 获取位置i,j位置元素
+   * 获取位置i行,j列位置元素，从0开始计算
+   * @param {number} i
+   * @param {number} j
+   * @return {number}
    * **/
-  Matrix.prototype.get = function (i, j) {
+  Matrix.prototype.getItem = function (i, j) {
+    if(!_numValidate(i+1) || !_numValidate(j+1)) _throwArgumentsError();
     return this._data[i][j];
-  }; 
+  };
+
+  /**
+   * 设置位置i行,j列位置元素，从0开始计算
+   * @param {number} i
+   * @param {number} j
+   * @param {number} value  设置的值
+   * @return {number}
+   * **/
+  Matrix.prototype.setItem = function (i, j, value) {
+    if(!_numValidate(i+1) || !_numValidate(j+1) || getType(value) !== 'number') _throwArgumentsError();
+    return this._data[i][j] = value;
+  };
+
+  /** 获取行数 **/
+  Object.defineProperty(Matrix.prototype, 'row', {
+    get: function(){
+      return this._data.length;
+    },
+    writable : false
+  });
+  /** 获取列数 **/
+  Object.defineProperty(Matrix.prototype, 'column', {
+    get: function(){
+      return this._data[0].length;
+    },
+    writable : false
+  });
+
+  /**
+   * 获取第i行元素
+   * @param {number} i
+   * @return {number[]}
+   * **/
+  Matrix.prototype.getRow = function (i) {
+    if(!_numValidate(i+1)) _throwArgumentsError();
+    return this._data[i].slice();
+  };
+  /**
+   * 获取第j列元素
+   * @param {number} j
+   * @return {number[]}
+   * **/
+  Matrix.prototype.getColumn = function (j) {
+    if(!_numValidate(j+1)) _throwArgumentsError();
+    let row = this.row;
+    let columnArray = [];
+    for(let i=0; i<row; i++){
+      columnArray.push(this.getItem(i, j));
+    }
+    return columnArray;
+  };
 
 
-
-
-
+  /**===================================== 类的static方法 ================================**/
 
 
 
@@ -115,7 +169,6 @@ const Matrix = (function(){
   function _convertToNumber(o){
     return getType(o) === 'number' ? o : (o ? 1 : 0);
   }
-
   /**================================= 类的内部方法end ==============================**/
 
 
