@@ -178,7 +178,7 @@ const Matrix = (function(){
     for(let i=0; i<a.row; i++){
       _data[i] = [];
       for(let j=0; j<a.column; j++){
-        _data[i][j] = parseFloat((new Big(getItem.call(a,i,j))).add(getItem.call(b,i,j)).toString());
+        _data[i][j] = Matrix._itemPlus(getItem.call(a,i,j), getItem.call(b,i,j));
       }
     }
 
@@ -203,7 +203,7 @@ const Matrix = (function(){
     for(let i=0; i<a.row; i++){
       _data[i] = [];
       for(let j=0; j<a.column; j++){
-        _data[i][j] = parseFloat((new Big(getItem.call(a,i,j))).minus(getItem.call(b,i,j)).toString());
+        _data[i][j] = Matrix._itemMinus(getItem.call(a,i,j), getItem.call(b,i,j));
       }
     }
 
@@ -212,6 +212,28 @@ const Matrix = (function(){
     return m;
   };
 
+
+  /**
+   * 定义item值的加法运算规则。如果想自定义值的加法规则，可以覆盖
+   * 默认是使用Big.js进行的加法运算
+   * @param {number} a
+   * @param {number} b
+   * @return {number}
+   * **/
+  Matrix._itemPlus = function (a, b) {
+    return parseFloat((new Big(a)).add(b).toString());
+  };
+
+  /**
+   * 定义item值的减法运算规则。如果想自定义值的减法规则，可以覆盖
+   * 默认是使用Big.js进行的减法运算
+   * @param {number} a
+   * @param {number} b
+   * @return {number}
+   * **/
+  Matrix._itemMinus = function (a, b) {
+    return parseFloat((new Big(a)).minus(b).toString());
+  };
 
   /**===================================== 类的内部方法 ================================**/
   /**
@@ -247,9 +269,8 @@ const Matrix = (function(){
    * 校验和转换规则：
    * 1.第一层数组元素必为数组
    * 2.矩阵必须为矩形，即每一列长度必须一致，也就是每一个二级数组长度必须一致
-   * 3.第二层数组中的元素，非数字的元素会按照真假值进行进行0，1转换。
    * @param {Array} arr 输入的数组
-   * @return {Array<Array<number>>}
+   * @return {Array<Array<?>>}
    * **/
   function _arrayValidate(arr){
     let result = [];
@@ -264,26 +285,20 @@ const Matrix = (function(){
       if( i !== 0 && column !== v.length) _throwArgumentsError();
       column = v.length;
 
-      //3.遍历二级数组，进行值的转换
+      //3.遍历二级数组
       let newArr = [];
-      v.forEach( e => newArr.push(_convertToNumber(e)));
+      v.forEach( e => newArr.push(e));
       result[i] = newArr;
     });
     return result;
-  }
-
-  /**
-   * 将值转为数字
-   * 1.数字直接返回
-   * 2.非数字，真值转为1，假值转为0
-   * **/
-  function _convertToNumber(o){
-    return getType(o) === 'number' ? o : (o ? 1 : 0);
   }
   /**================================= 类的内部方法end ==============================**/
   return Matrix;
 })();
 
-
+try{
+  window.Matrix = window.Matrix || Matrix;
+}
+catch (e){}
 
 module.exports = Matrix;
