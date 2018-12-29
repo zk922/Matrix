@@ -70,3 +70,7 @@ console.log(Matrix.multiply(m4, m5, m6));
 console.log(m4.mul(m5, m6));
 console.log(m4.multiply(m5, m6));
 //=> Matrix  [ [ 12, 15, 18 ] ]
+
+console.log(m4.mul(2));
+
+console.log(m4.mul(2, m5));

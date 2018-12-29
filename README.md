@@ -52,6 +52,7 @@ m.toString()
 m.toArray()
 //=> a copy of data     Array [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 111, 8, 9 ], [ 10, 11, 12 ] ]
 ```
+### Calculate
 ```
 let m1 = new Matrix([[1,2,3]]);
 let m2 = new Matrix([[4,5,6]]);
@@ -60,10 +61,9 @@ let m4 = new Matrix([[7],[8],[9]]);
 let m5 = new Matrix([[4,5,6]]);
 let m6 = new Matrix([[11,22,33],[2,4,6],[7,9,33]]);
 
+
 /**
 * add
-* @param{Matrix} args
-* @return{Matrix}
 **/
 Matrix.add(m1, m2);
 m1.add(m2);
@@ -74,10 +74,9 @@ m1.add(m2, m3);
 m1.plus(m2, m3);
 //=> Matrix  [ [ 12, 15, 18 ] ]
 
+
 /**
 * minus
-* @param{Matrix} args
-* @return{Matrix}
 **/
 Matrix.minus(m1, m2);
 m1.minus(m2);
@@ -86,10 +85,9 @@ Matrix.minus(m1, m2, m3);
 m1.minus(m2, m3);
 //=> Matrix  [ [ -10, -11, -12 ] ]
 
+
 /**
 * multiply
-* @param{Matrix} args
-* @return{Matrix}
 **/
 Matrix.mul(m4, m5);
 m4.mul(m5);
@@ -99,4 +97,9 @@ Matrix.multiply(m4, m5, m6);
 m4.mul(m5, m6);
 m4.multiply(m5, m6);
 //=> Matrix  [ [ 672, 1134, 2520 ], [ 768, 1296, 2880 ], [ 864, 1458, 3240 ] ]
+m4.mul(2);
+//=> Matrix  [ [ 14 ], [ 16 ], [ 18 ] ]
+m4.mul(2, m5);
+//=> Matrix  [ [ 56, 70, 84 ], [ 64, 80, 96 ], [ 72, 90, 108 ] ]
+
 ```
