@@ -1,4 +1,4 @@
-const {getType, _create2dArray, _numValidate, _arrayValidate, _throwArgumentsError} = require('./utils');
+const {getType, _create2dArray, _numValidate, _arrayValidate, _throwArgumentsError, _clone} = require('./utils');
 
 
 /**
@@ -16,7 +16,7 @@ function Matrix(...args){
   else if(args.length === 1 && _numValidate(args[0])){
     this._data = _create2dArray(args[0], 1, 0);
   }
-  else if(args.length === 2 && _numValidate(args[0]) && _numValidate(args[1])){
+  else if(args.length >= 2 && _numValidate(args[0]) && _numValidate(args[1])){
     this._data = _create2dArray(args[0], args[1], 0);
   }
   else if(getType(args[0]) === 'array'){
@@ -74,7 +74,7 @@ Object.defineProperty(Matrix.prototype, 'column', {
  * @return {number[]}
  * **/
 Matrix.prototype.getRow = function (i) {
-  if(!_numValidate(i+1)) _throwArgumentsError();
+  if(!_numValidate(i+1) || i+1>this.row) _throwArgumentsError();
   return this._data[i].slice();
 };
 /**
@@ -83,7 +83,7 @@ Matrix.prototype.getRow = function (i) {
  * @return {number[]}
  * **/
 Matrix.prototype.getColumn = function (j) {
-  if(!_numValidate(j+1)) _throwArgumentsError();
+  if(!_numValidate(j+1) || j+1>this.column) _throwArgumentsError();
   let row = this.row;
   let columnArray = [];
   for(let i=0; i<row; i++){
@@ -111,5 +111,14 @@ Matrix.prototype.toString = function(){
 Matrix.prototype.valueOf = function(){
   return Array.prototype.valueOf.call(this._data);
 };
+
+/**
+ * 返回一套数组格式的数据副本
+ * @return {Array}
+ * **/
+Matrix.prototype.toArray = function(){
+  return _clone(this._data);
+};
+
 
 module.exports = Matrix;

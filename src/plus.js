@@ -46,3 +46,5 @@ function plusTwo(a, b) {
   m._data = _data;
   return m;
 }
+
+module.exports = Matrix;

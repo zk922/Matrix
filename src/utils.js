@@ -39,8 +39,26 @@ function _numValidate(n) {
  * 抛出异常
  * **/
 function _throwArgumentsError() {
-  throw new Error('Invalid arguments type');
+  throw new Error('Invalid arguments');
 }
+
+/**
+ * clone 二维数组
+ * @param {Array} arr
+ * @return {Array}
+ * **/
+function _clone(arr) {
+  let result = [];
+  arr.forEach((row, i)=>{
+    result[i] = [];
+    row.forEach((item, j)=>{
+      result[i][j] = item;
+    });
+  });
+  return result;
+}
+
+
 /**
  * 输入为数组时候进行校验并二层拷贝数组
  * 校验和转换规则：
@@ -72,9 +90,9 @@ function _arrayValidate(arr){
 
 module.exports = {
   getType,
-  isInt,
   _create2dArray,
   _numValidate,
   _throwArgumentsError,
-  _arrayValidate
+  _arrayValidate,
+  _clone
 };

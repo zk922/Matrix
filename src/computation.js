@@ -35,3 +35,14 @@ Matrix._itemPlus = function (a, b) {
 Matrix._itemMinus = function (a, b) {
   return parseFloat((new Big(a)).minus(b).toString());
 };
+
+/**
+ * 定义item值的乘法运算规则。如果想自定义值的乘法规则，可以覆盖
+ * 默认是使用Big.js进行的减法运算
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
+ * **/
+Matrix._itemMultiply = function (a, b) {
+  return parseFloat((new Big(a)).mul(b).toString());
+};
