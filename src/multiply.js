@@ -1,38 +1,103 @@
-function multiply(...args){
-  if(args.length === 0){
-    throw new Error('至少有一个参数');
-  }
-  if(args.length === 1){
-    return args[0];
-  }
-  return multiply(multiplyTwo(args[0], args[1]), ...args.slice(2));
-}
+const Matrix = require('./matrix');
+const {_throwArgumentsError, getType} = require('./utils');
+
+/**
+ * matrix相乘
+ * @param {Matrix | number} args
+ * @return {Matrix}
+ * **/
+Matrix.multiply = Matrix.mul = function(...args){
+  if(args.length < 2) _throwArgumentsError();
+  if(args.length === 2) return multiplyTwo(...args);
+  return Matrix.multiply(multiplyTwo(args[0], args[1]), ...args.slice(2));
+};
+
+/**
+ * matrix相乘
+ * @param {Matrix | number} args
+ * @return {Matrix}
+ * **/
+Matrix.prototype.multiply = Matrix.prototype.mul = function (...args){
+  return Matrix.mul(this, ...args);
+};
+
 /**
  * 计算两个值的乘积
+ * 参数判断共判断9种情况
+ * a type:  Matrix | number |others
+ * b type:  Matrix | number |others
+ *
+ * @param {Matrix | number} a
+ * @param {Matrix | number} b
+ * @return {Matrix | number}
  * **/
 function multiplyTwo(a, b){
-  let line = a.length;        //结果矩阵行数
-  let column = b[0].length;   //结果矩阵列数
+  //a,b种有非Matrix或者number的类型，报错
+  if((!(a instanceof Matrix) && getType(a) !== 'number') || (!(b instanceof Matrix) && getType(b) !== 'number')) _throwArgumentsError();
+  if(a instanceof Matrix && b instanceof Matrix) return twoMatrix(a, b);
+  if(getType(a) === 'number' && getType(b) === 'number') return Matrix._itemMultiply(a, b);
+  return matrixAndNumber(a, b);
+}
+
+/**
+ * 计算两个matrix的乘积
+ * @param {Matrix} a
+ * @param {Matrix} b
+ * @return {Matrix}
+ * **/
+function twoMatrix(a, b){
+  if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
+  if(a.column !== b.row ) _throwArgumentsError();
+
+  let row = b.row;        //结果矩阵行数
+  let column = a.column;   //结果矩阵列数
   /**
-   * i,j位置值为a的i行与b的j列对应值相乘再求和，
-   * 所以，计算次数应该为a的列数与b的行数的较小值。
+   * i,j位置值为a的i行与b的j列对应值相乘再求和
    * **/
-  let calculateTime = Math.min(a[0].length, b.length);
   function calculate(i, j){
     let num = 0;
-    for(let n=0; n<calculateTime; n++){
-      num += a[i][n] * b[n][j];
+    for(let n=0; n<row; n++){
+      num = Matrix._itemPlus(num, Matrix._itemMultiply(a.getItem(i,n), b.getItem(n,j)));
     }
     return num;
   }
-  let result = [];
-  for(let i=0; i<line; i++){
-    result[i] = [];
+  let _data = [];
+  for(let i=0; i<row; i++){
+    _data[i] = [];
     for(let j=0; j<column; j++){
-      result[i][j] = calculate(i, j);
+      _data[i][j] = calculate(i, j);
     }
   }
-  return result;
+  let m = new Matrix();
+  m._data = _data;
+  return m;
 }
 
-module.exports = multiply;
+
+/**
+ * 计算number与matrix的乘积
+ * @param {Matrix | number} a
+ * @param {Matrix | number} b
+ * @return {Matrix | number}
+ * **/
+function matrixAndNumber(a, b){
+  let matrix = a instanceof Matrix ? a : b;
+  let number = a instanceof Matrix ? b : a;
+
+  let _data = [];
+  let getItem = Matrix.prototype.getItem;
+
+  let row = matrix.row;
+  let column = matrix.column;
+
+  for(let i=0; i<row; i++){
+    _data[i] = new Array(column);
+    matrix._data.forEach((item, j)=>{
+      _data[i][j] = Matrix._itemMultiply(getItem.call(matrix,i,j), number);
+    });
+  }
+  let m = new Matrix();
+  m._data = _data;
+
+  return m;
+}
