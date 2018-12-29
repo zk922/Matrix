@@ -95,7 +95,7 @@ function matrixAndNumber(a, b){
 
   for(let i=0; i<row; i++){
     _data[i] = new Array(column);
-    matrix._data.forEach((item, j)=>{
+    matrix._data[i].forEach((item, j)=>{
       _data[i][j] = Matrix._itemMultiply(getItem.call(matrix,i,j), number);
     });
   }
