@@ -1,5 +1,5 @@
 const {getType, isInt} = require('./utils');
-
+const Big = require('big.js');
 
 
 const Matrix = (function(){
@@ -23,6 +23,9 @@ const Matrix = (function(){
     }
     else if(getType(args[0]) === 'array'){
       this._data = _arrayValidate(args[0]);
+    }
+    else if(args[0] instanceof Matrix){
+      this._data = _arrayValidate(args[0]._data);
     }
     else {
       _throwArgumentsError();
@@ -58,15 +61,13 @@ const Matrix = (function(){
   Object.defineProperty(Matrix.prototype, 'row', {
     get: function(){
       return this._data.length;
-    },
-    writable : false
+    }
   });
   /** 获取列数 **/
   Object.defineProperty(Matrix.prototype, 'column', {
     get: function(){
       return this._data[0].length;
-    },
-    writable : false
+    }
   });
 
   /**
@@ -93,13 +94,103 @@ const Matrix = (function(){
     return columnArray;
   };
 
+  /**
+   * 判断是否与某个Matrix相等
+   * @param {Matrix} matrix
+   * @return {boolean}
+   * **/
+  Matrix.prototype.equal = Matrix.prototype.eq = function(matrix){
+    return Matrix.equal(this, matrix);
+  };
+
+  /**
+   * Matrix相加
+   * @param {Matrix} matrix
+   * @return {Matrix}
+   * **/
+  Matrix.prototype.add = Matrix.prototype.plus = function(matrix){
+    return Matrix.add(this, matrix);
+  };
+
+  /**
+   * Matrix相减
+   * @param {Matrix} matrix
+   * @return {Matrix}
+   * **/
+  Matrix.prototype.minus = function(matrix){
+    return Matrix.minus(this, matrix);
+  };
 
   /**===================================== 类的static方法 ================================**/
+  /**
+   * 判断两个matrix是否相等
+   * @param {Matrix} a
+   * @param {Matrix} b
+   * @return {boolean}
+   * **/
+  Matrix.equal = Matrix.eq = function (a, b) {
+    if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
+    if(a.column !== b.column || a.row !== b.row) return false;
 
+    let getItem = Matrix.prototype.getItem;
+    for(let i=0; i<a.row; i++){
+      for(let j=0; j<a.column; j++){
+        if(getItem.call(a,i,j) !== getItem.call(b,i,j)) return false;
+      }
+    }
 
+    return true;
+  };
 
+  /**
+   * matrix相加
+   * @param {Matrix} a
+   * @param {Matrix} b
+   * @return {Matrix}
+   * **/
+  Matrix.add = Matrix.plus = function (a, b) {
+    if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
+    if(a.column !== b.column || a.row !== b.row) _throwArgumentsError();
 
+    let _data = [];
 
+    let getItem = Matrix.prototype.getItem;
+    for(let i=0; i<a.row; i++){
+      _data[i] = [];
+      for(let j=0; j<a.column; j++){
+        _data[i][j] = parseFloat((new Big(getItem.call(a,i,j))).add(getItem.call(b,i,j)).toString());
+      }
+    }
+
+    let m = new Matrix();
+    m._data = _data;
+    return m;
+  };
+
+  /**
+   * matrix相减
+   * @param {Matrix} a
+   * @param {Matrix} b
+   * @return {Matrix}
+   * **/
+  Matrix.minus = function (a, b) {
+    if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
+    if(a.column !== b.column || a.row !== b.row) _throwArgumentsError();
+
+    let _data = [];
+
+    let getItem = Matrix.prototype.getItem;
+    for(let i=0; i<a.row; i++){
+      _data[i] = [];
+      for(let j=0; j<a.column; j++){
+        _data[i][j] = parseFloat((new Big(getItem.call(a,i,j))).minus(getItem.call(b,i,j)).toString());
+      }
+    }
+
+    let m = new Matrix();
+    m._data = _data;
+    return m;
+  };
 
 
   /**===================================== 类的内部方法 ================================**/
@@ -170,14 +261,9 @@ const Matrix = (function(){
     return getType(o) === 'number' ? o : (o ? 1 : 0);
   }
   /**================================= 类的内部方法end ==============================**/
-
-
-
-
-
-
   return Matrix;
 })();
 
 
 
+module.exports = Matrix;
