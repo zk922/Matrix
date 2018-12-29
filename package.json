@@ -1,7 +1,9 @@
 {
   "name": "matrix",
+  "author": "zk922",
+  "repository": "https://github.com/zk922/matrix.git",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./src/main.js",
   "license": "MIT",
   "dependencies": {
     "big.js": "^5.2.2"
