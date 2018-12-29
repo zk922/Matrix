@@ -1,12 +1,15 @@
-function multiply(...args){
+const Matrix = require('./matrix');
+const {_throwArgumentsError} = require('./utils');
+
+Matrix.prototype.multiply = function (...args){
   if(args.length === 0){
     throw new Error('至少有一个参数');
   }
   if(args.length === 1){
     return args[0];
   }
-  return multiply(multiplyTwo(args[0], args[1]), ...args.slice(2));
-}
+  return this.multiply(multiplyTwo(args[0], args[1]), ...args.slice(2));
+};
 /**
  * 计算两个值的乘积
  * **/
@@ -35,4 +38,3 @@ function multiplyTwo(a, b){
   return result;
 }
 
-module.exports = multiply;
