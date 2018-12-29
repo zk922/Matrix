@@ -52,4 +52,51 @@ m.toString()
 m.toArray()
 //=> a copy of data     Array [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 111, 8, 9 ], [ 10, 11, 12 ] ]
 ```
-### static methods
+```
+let m1 = new Matrix([[1,2,3]]);
+let m2 = new Matrix([[4,5,6]]);
+let m3 = new Matrix([[7,8,9]]);
+let m4 = new Matrix([[7],[8],[9]]);
+let m5 = new Matrix([[4,5,6]]);
+let m6 = new Matrix([[11,22,33],[2,4,6],[7,9,33]]);
+
+/**
+* add
+* @param{Matrix} args
+* @return{Matrix}
+**/
+Matrix.add(m1, m2);
+m1.add(m2);
+//=> Matrix [ [ 5, 7, 9 ] ]
+Matrix.add(m1, m2, m3);
+Matrix.plus(m1, m2, m3);
+m1.add(m2, m3);
+m1.plus(m2, m3);
+//=> Matrix  [ [ 12, 15, 18 ] ]
+
+/**
+* minus
+* @param{Matrix} args
+* @return{Matrix}
+**/
+Matrix.minus(m1, m2);
+m1.minus(m2);
+//=> Matrix [ [ -3, -3, -3 ] ]
+Matrix.minus(m1, m2, m3);
+m1.minus(m2, m3);
+//=> Matrix  [ [ -10, -11, -12 ] ]
+
+/**
+* multiply
+* @param{Matrix} args
+* @return{Matrix}
+**/
+Matrix.mul(m4, m5);
+m4.mul(m5);
+//=> Matrix [ [ 28, 35, 42 ], [ 32, 40, 48 ], [ 36, 45, 54 ] ]
+Matrix.mul(m4, m5, m6);
+Matrix.multiply(m4, m5, m6);
+m4.mul(m5, m6);
+m4.multiply(m5, m6);
+//=> Matrix  [ [ 672, 1134, 2520 ], [ 768, 1296, 2880 ], [ 864, 1458, 3240 ] ]
+```

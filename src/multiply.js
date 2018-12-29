@@ -49,14 +49,17 @@ function twoMatrix(a, b){
   if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
   if(a.column !== b.row ) _throwArgumentsError();
 
-  let row = b.row;        //结果矩阵行数
-  let column = a.column;   //结果矩阵列数
+  let row = a.row;        //结果矩阵行数
+  let column = b.column;   //结果矩阵列数
+
+  let calculateTime = a.column;
+
   /**
    * i,j位置值为a的i行与b的j列对应值相乘再求和
    * **/
   function calculate(i, j){
     let num = 0;
-    for(let n=0; n<row; n++){
+    for(let n=0; n<calculateTime; n++){
       num = Matrix._itemPlus(num, Matrix._itemMultiply(a.getItem(i,n), b.getItem(n,j)));
     }
     return num;
