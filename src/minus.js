@@ -4,11 +4,32 @@ const {_throwArgumentsError} = require('./utils');
 
 /**
  * matrix相减
+ * @param {Matrix} args
+ * @return {Matrix}
+ * **/
+Matrix.minus = function(...args){
+  if(args.length < 2) _throwArgumentsError();
+  if(args.length === 2) return minusTwo(args[0], args[1]);
+  return Matrix.minus(minusTwo(args[0], args[1]), ...args.slice(2));
+};
+
+/**
+ * Matrix相减
+ * @param {Matrix} args
+ * @return {Matrix}
+ * **/
+Matrix.prototype.minus = function(...args){
+  return Matrix.minus(this, ...args);
+};
+
+
+/**
+ * 两个matrix相减
  * @param {Matrix} a
  * @param {Matrix} b
  * @return {Matrix}
  * **/
-Matrix.minus = function (a, b) {
+function minusTwo(a, b) {
   if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
   if(a.column !== b.column || a.row !== b.row) _throwArgumentsError();
 
@@ -25,13 +46,4 @@ Matrix.minus = function (a, b) {
   let m = new Matrix();
   m._data = _data;
   return m;
-};
-
-/**
- * Matrix相减
- * @param {Matrix} matrix
- * @return {Matrix}
- * **/
-Matrix.prototype.minus = function(matrix){
-  return Matrix.minus(this, matrix);
-};
+}

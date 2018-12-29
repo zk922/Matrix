@@ -3,11 +3,32 @@ const {_throwArgumentsError} = require('./utils');
 
 /**
  * matrix相加
+ * @param {Matrix} args
+ * @return {Matrix}
+ * **/
+Matrix.add = Matrix.plus = function(...args){
+  if(args.length < 2) _throwArgumentsError();
+  if(args.length === 2) return plusTwo(...args);
+  return Matrix.add(plusTwo(args[0], args[1]), ...args.slice(2));
+};
+
+/**
+ * Matrix相加
+ * @param {Matrix} args
+ * @return {Matrix}
+ * **/
+Matrix.prototype.add = Matrix.prototype.plus = function(...args){
+  return Matrix.add(this, ...args);
+};
+
+
+/**
+ * 两个Matrix相加
  * @param {Matrix} a
  * @param {Matrix} b
  * @return {Matrix}
  * **/
-Matrix.add = Matrix.plus = function (a, b) {
+function plusTwo(a, b) {
   if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
   if(a.column !== b.column || a.row !== b.row) _throwArgumentsError();
 
@@ -24,13 +45,4 @@ Matrix.add = Matrix.plus = function (a, b) {
   let m = new Matrix();
   m._data = _data;
   return m;
-};
-
-/**
- * Matrix相加
- * @param {Matrix} matrix
- * @return {Matrix}
- * **/
-Matrix.prototype.add = Matrix.prototype.plus = function(matrix){
-  return Matrix.add(this, matrix);
-};
+}
