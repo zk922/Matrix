@@ -18,3 +18,8 @@ console.log(add);
 
 let minus = Matrix.minus(new Matrix([[1,2.1,3]]), new Matrix([[3,1.2,5]]));
 console.log(minus);
+console.log(new Matrix([[123,4],[3,4],[22,3]]).toString());
+console.log(new Matrix([[123,4],[3,4],[22,3]]).valueOf());
+
+let eq = Matrix.eq(new Matrix([[1,2.1,31]]), new Matrix([[1,2.1,3]]));
+console.log(eq);

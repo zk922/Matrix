@@ -121,6 +121,26 @@ const Matrix = (function(){
     return Matrix.minus(this, matrix);
   };
 
+  /**
+   * 覆写toString方法
+   * @return {string}
+   * **/
+  Matrix.prototype.toString = function(){
+    let str = '[\n';
+    this._data.forEach((row, i, matrix)=>{
+      str += `[${row.toString()}]${i+1<matrix.length?',':''}\n`
+    });
+    str += ']';
+    return str;
+  };
+
+  /**
+   * 覆写valueOf方法
+   * **/
+  Matrix.prototype.valueOf = function(){
+    return Array.prototype.valueOf.call(this._data);
+  };
+
   /**===================================== 类的static方法 ================================**/
   /**
    * 判断两个matrix是否相等
