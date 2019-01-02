@@ -45,9 +45,10 @@ function _throwArgumentsError() {
 /**
  * clone 二维数组
  * @param {Array} arr
+ * @param {function?} fn 复制数组时候，每个ij位置的回调
  * @return {Array}
  * **/
-function _clone(arr) {
+function _clone(arr, fn) {//todo 需要将二维数组遍历方式统一
   let result = [];
   arr.forEach((row, i)=>{
     result[i] = [];

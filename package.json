@@ -4,12 +4,16 @@
   "repository": "https://github.com/zk922/matrix.git",
   "version": "1.0.0",
   "main": "./src/main.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha ./spec/base.spec.js"
+  },
   "license": "MIT",
   "dependencies": {
     "big.js": "^5.2.2"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",
+    "chai": "^4.2.0",
     "mocha": "^5.2.0"
   }
 }
