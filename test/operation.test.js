@@ -1,6 +1,6 @@
 const {assert} = require('chai');
 const Matrix = require('../src/main');
-const {arrayEqual} = require('./utils');
+const {arrayEqual, array2dEqual} = require('./utils');
 
 const arr = [
   [2.1, 3.2, 4.5, 3.6, 5.4],
@@ -9,7 +9,7 @@ const arr = [
 ];
 
 describe('basic operations test 基本操作测试', function () {
-  describe('取值getItem(i,j)', function () {
+  describe('取值getItem(i, j)', function () {
     it('i, j不是非负整数，报错', function () {
       let m = new Matrix(arr);
       assert.throw(function () {
@@ -38,7 +38,8 @@ describe('basic operations test 基本操作测试', function () {
       assert.equal(m.getItem(1, 1), 3);
     });
   });
-  describe('设置值setItem(i,j,v)', function () {
+
+  describe('设置值setItem(i, j, v)', function () {
     it('i, j不是非负整数，报错', function () {
       let m = new Matrix(arr);
       assert.throw(function () {
@@ -70,12 +71,13 @@ describe('basic operations test 基本操作测试', function () {
       assert.equal(m._data[1][1], 99);
     });
   });
+
   describe('获取行/列数', function () {
-    it('row === 3', function () {
+    it('m.row === 3', function () {
       let m = new Matrix(arr);
       assert.equal(m.row, 3);
     });
-    it('column === 5', function () {
+    it('m.column === 5', function () {
       let m = new Matrix(arr);
       assert.equal(m.column, 5);
     });
@@ -143,6 +145,23 @@ describe('basic operations test 基本操作测试', function () {
     it('返回结果正确', function () {
       let m = new Matrix(arr);
       assert.isTrue(arrayEqual(m.getColumn(1), [3.2, 3, 2]));
+    });
+  });
+
+  describe('转成数组toArray', function () {
+    it('返回数组', function () {
+      let m = new Matrix(arr);
+      assert.isArray(m.toArray());
+    });
+    it('返回数组为副本', function () {
+      let m = new Matrix(arr);
+      assert.notEqual(m.toArray(), m._data);
+      assert.notEqual(m.toArray(), arr);
+    });
+    it('返回结果正确', function () {
+      let m = new Matrix(arr);
+      assert.isTrue(array2dEqual(m.toArray(), arr));
+      assert.isTrue(array2dEqual(m.toArray(), m._data));
     });
   });
 });
