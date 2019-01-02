@@ -45,6 +45,7 @@ function Matrix(...args){
  * **/
 Matrix.prototype.getItem = function (i, j) {
   if(!_numValidate(i+1) || !_numValidate(j+1)) _throwArgumentsError();
+  if(i+1>this.row || j+1>this.column) _throwArgumentsError('i or j is out of upper limit');
   return this._data[i][j];
 };
 
@@ -57,6 +58,7 @@ Matrix.prototype.getItem = function (i, j) {
  * **/
 Matrix.prototype.setItem = function (i, j, value) {
   if(!_numValidate(i+1) || !_numValidate(j+1) || getType(value) !== 'number') _throwArgumentsError();
+  if(i+1>this.row || j+1>this.column) _throwArgumentsError('i or j is out of upper limit');
   return this._data[i][j] = value;
 };
 
@@ -79,7 +81,7 @@ Object.defineProperty(Matrix.prototype, 'column', {
  * @return {number[]}
  * **/
 Matrix.prototype.getRow = function (i) {
-  if(!_numValidate(i+1) || i+1>this.row) _throwArgumentsError();
+  if(!_numValidate(i+1) || i+1>this.row) _throwArgumentsError('i is out of upper limit');
   return this._data[i].slice();
 };
 /**
@@ -88,7 +90,7 @@ Matrix.prototype.getRow = function (i) {
  * @return {number[]}
  * **/
 Matrix.prototype.getColumn = function (j) {
-  if(!_numValidate(j+1) || j+1>this.column) _throwArgumentsError();
+  if(!_numValidate(j+1) || j+1>this.column) _throwArgumentsError('j is out of upper limit');
   let row = this.row;
   let columnArray = [];
   for(let i=0; i<row; i++){
