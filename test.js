@@ -74,3 +74,5 @@ console.log(m4.multiply(m5, m6));
 console.log(m4.mul(2));
 
 console.log(m4.mul(2, m5));
+
+new Matrix(-1)

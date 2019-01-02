@@ -38,3 +38,5 @@ Thumbs.db
 /config.js
 log.log
 err.log
+
+/testReport
