@@ -32,7 +32,7 @@ Matrix.prototype.multiply = Matrix.prototype.mul = function (...args){
  * @return {Matrix | number}
  * **/
 function multiplyTwo(a, b){
-  //a,b种有非Matrix或者number的类型，报错
+  //a,b中有非Matrix或者number的类型，报错
   if((!(a instanceof Matrix) && getType(a) !== 'number') || (!(b instanceof Matrix) && getType(b) !== 'number')) _throwArgumentsError();
   if(a instanceof Matrix && b instanceof Matrix) return twoMatrix(a, b);
   if(getType(a) === 'number' && getType(b) === 'number') return Matrix._itemMultiply(a, b);

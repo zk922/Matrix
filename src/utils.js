@@ -37,22 +37,26 @@ function _numValidate(n) {
 
 /**
  * 抛出异常
+ * @param {string?} msg
  * **/
-function _throwArgumentsError() {
-  throw new Error('Invalid arguments');
+function _throwArgumentsError(msg) {
+  throw new Error('Invalid arguments' + (msg ? ': ' + msg : ''));
 }
 
 /**
  * clone 二维数组
  * @param {Array} arr
+ * @param {function?} fn1 复制数组时候，每遍历i行时候的回调
+ * @param {function?} fn2 复制数组时候，每遍历i行j列时候的回调
  * @return {Array}
  * **/
-function _clone(arr) {
+function _clone(arr, fn1, fn2) {//todo 需要将二维数组遍历方式统一
   let result = [];
   arr.forEach((row, i)=>{
+    fn1 && fn1(row, i, arr);
     result[i] = [];
     row.forEach((item, j)=>{
-      result[i][j] = item;
+      result[i][j] = fn2 ? fn2(item, i, j, arr) : item;
     });
   });
   return result;
@@ -64,28 +68,18 @@ function _clone(arr) {
  * 校验和转换规则：
  * 1.第一层数组元素必为数组
  * 2.矩阵必须为矩形，即每一列长度必须一致，也就是每一个二级数组长度必须一致
- * @param {Array} arr 输入的数组
+ * @param {Array} source 输入的数组
  * @return {Array<Array<?>>}
  * **/
-function _arrayValidate(arr){
-  let result = [];
-  let column = 0;   //用来比对第二层数组长度
-  arr.forEach((v, i)=>{
-    //1.校验第一层数组必须为数组
-    if(getType(v) !== 'array'){
-      _throwArgumentsError();
+function _arrayValidate(source){
+  let column = 0;
+  return _clone(source, function (row, i) {
+    if(getType(row) !== 'array'){
+      _throwArgumentsError('Array must be a two-dimensional array');
     }
-
-    //2.校验长度一致
-    if( i !== 0 && column !== v.length) _throwArgumentsError();
-    column = v.length;
-
-    //3.遍历二级数组
-    let newArr = [];
-    v.forEach( e => newArr.push(e));
-    result[i] = newArr;
+    if( i !== 0 && column !== row.length) _throwArgumentsError('Columns must be consistent');
+    column = row.length;
   });
-  return result;
 }
 
 module.exports = {

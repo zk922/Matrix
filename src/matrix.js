@@ -6,18 +6,23 @@ const {getType, _create2dArray, _numValidate, _arrayValidate, _throwArgumentsErr
  * 可选接收参数方式:
  * 1.无参数，返回1*1 矩阵
  * 2.一个不小于1的整数参数i，返回i行1列矩阵
- * 3.一个参数
+ * 3.一个参数并且为数字，
  * **/
 function Matrix(...args){
   //1.validate arguments
   if(args.length === 0){
     this._data = _create2dArray(1, 1, 0);    //无参数返回1*1 Matrix
   }
-  else if(args.length === 1 && _numValidate(args[0])){
-    this._data = _create2dArray(args[0], 1, 0);
-  }
-  else if(args.length >= 2 && _numValidate(args[0]) && _numValidate(args[1])){
-    this._data = _create2dArray(args[0], args[1], 0);
+  else if(getType(args[0]) === 'number'){
+    if(!_numValidate(args[0])){
+      _throwArgumentsError('Rows and Columns arguments must be positive integers');
+    }
+    else if(!_numValidate(args[1])){
+      this._data = _create2dArray(args[0], 1, 0);
+    }
+    else if( _numValidate(args[1])){
+      this._data = _create2dArray(args[0], args[1], 0);
+    }
   }
   else if(getType(args[0]) === 'array'){
     this._data = _arrayValidate(args[0]);
@@ -40,6 +45,7 @@ function Matrix(...args){
  * **/
 Matrix.prototype.getItem = function (i, j) {
   if(!_numValidate(i+1) || !_numValidate(j+1)) _throwArgumentsError();
+  if(i+1>this.row || j+1>this.column) _throwArgumentsError('i or j is out of upper limit');
   return this._data[i][j];
 };
 
@@ -52,6 +58,7 @@ Matrix.prototype.getItem = function (i, j) {
  * **/
 Matrix.prototype.setItem = function (i, j, value) {
   if(!_numValidate(i+1) || !_numValidate(j+1) || getType(value) !== 'number') _throwArgumentsError();
+  if(i+1>this.row || j+1>this.column) _throwArgumentsError('i or j is out of upper limit');
   return this._data[i][j] = value;
 };
 
@@ -74,7 +81,7 @@ Object.defineProperty(Matrix.prototype, 'column', {
  * @return {number[]}
  * **/
 Matrix.prototype.getRow = function (i) {
-  if(!_numValidate(i+1) || i+1>this.row) _throwArgumentsError();
+  if(!_numValidate(i+1) || i+1>this.row) _throwArgumentsError('i is out of upper limit');
   return this._data[i].slice();
 };
 /**
@@ -83,7 +90,7 @@ Matrix.prototype.getRow = function (i) {
  * @return {number[]}
  * **/
 Matrix.prototype.getColumn = function (j) {
-  if(!_numValidate(j+1) || j+1>this.column) _throwArgumentsError();
+  if(!_numValidate(j+1) || j+1>this.column) _throwArgumentsError('j is out of upper limit');
   let row = this.row;
   let columnArray = [];
   for(let i=0; i<row; i++){
