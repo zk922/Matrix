@@ -50,7 +50,7 @@ function _throwArgumentsError(msg) {
  * @param {function?} fn2 复制数组时候，每遍历i行j列时候的回调
  * @return {Array}
  * **/
-function _clone(arr, fn1, fn2) {//todo 需要将二维数组遍历方式统一
+function _clone(arr, fn1, fn2) {
   let result = [];
   arr.forEach((row, i)=>{
     fn1 && fn1(row, i, arr);
