@@ -59,7 +59,7 @@ describe('Constructor Test 构造函数测试', function () {
       let arr = [[1, 4.4],[2, 3],[3, 6.7]];
       let m = new Matrix(arr);
       assert.notEqual(m._data, arr);
-      m._data.forEach((row, i)=>assert.notEqual(row, arr[i]));
+      assert.isTrue(m._data.every((row, i)=>row !== arr[i]));
     });
   });
 
@@ -71,8 +71,9 @@ describe('Constructor Test 构造函数测试', function () {
     });
     it('两个矩阵的_data是副本', function () {
       let mc = new Matrix(m);
+      assert.notEqual(m, mc);
       assert.notEqual(mc._data, m._data);
-      mc._data.forEach((row, i)=>assert.notEqual(row, m._data[i]));
+      assert.isTrue(mc._data.every((row, i)=>row !== m._data[i]));
     });
   });
 });
