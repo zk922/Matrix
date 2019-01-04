@@ -19,7 +19,7 @@ let m5 = new Matrix(m4);
 ```
 
 ### Public properties and methods
-```
+``` javascript
 let m = new Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]);
 
 m.row
@@ -53,7 +53,7 @@ m.toArray()
 //=> a copy of data     Array [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 111, 8, 9 ], [ 10, 11, 12 ] ]
 ```
 ### Calculate
-```
+``` javascript
 let m1 = new Matrix([[1,2,3]]);
 let m2 = new Matrix([[4,5,6]]);
 let m3 = new Matrix([[7,8,9]]);
