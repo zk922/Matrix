@@ -1,7 +1,7 @@
 # Matrix
 
 ### Constructor
-```
+``` javascript
 let m1 = new Matrix(); 
 //=> Matrix  [ [0] ]
 
