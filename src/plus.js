@@ -30,8 +30,8 @@ Matrix.prototype.add = Matrix.prototype.plus = function(...args){
  * @return {Matrix}
  * **/
 function plusTwo(a, b) {
-  if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
-  if(a.column !== b.column || a.row !== b.row) _throwArgumentsError();
+  if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError('arguments type must be Matrix');
+  if(a.column !== b.column || a.row !== b.row) _throwArgumentsError('rows and columns must be equivalent');
 
   let _data = [];
 

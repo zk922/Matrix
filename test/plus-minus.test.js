@@ -18,8 +18,13 @@ let arr4 = [
   [3.3, 4.8, 13.3],
   [8  , 9.2, 34  ]
 ];
-
-
+let arr5 = [
+  [1.1, 2.3, 4.4]
+];
+let arr6 = [
+  [1.1, 2.3],
+  [4  , 4.6]
+];
 describe('相等判断方法测试 equal test', function () {
   describe('public相等测试 m.equal() & m.eq()', function () {
     it('m.equal与m.eq相同', function () {
@@ -140,13 +145,26 @@ describe('加法功能测试 plus test', function (){
       let m1 = new Matrix(arr1);
       assert.throw(function (){
         m1.add();
-      }, 'Invalid arguments: must have at least one argument')
+      }, 'Invalid arguments: must have at least one argument');
     });
     it('参数有不为Matrix的，报错', function (){
-
+      let m1 = new Matrix(arr1);
+      let m2 = new Matrix(arr2);
+      assert.throw(function () {
+        m1.add(m2, arr2);
+      }, 'Invalid arguments: arguments type must be Matrix');
     });
-    it('行不相等，报错');
-    it('列不相等，报错');
+    it('行或者列不相等，报错', function () {
+      let m1 = new Matrix(arr1);
+      let m2 = new Matrix(arr5);
+      let m3 = new Matrix(arr6);
+      assert.throw(function () {
+        m1.add(m2);
+      }, 'Invalid arguments: rows and columns must be equivalent');
+      assert.throw(function () {
+        m1.add(m3);
+      }, 'Invalid arguments: rows and columns must be equivalent');
+    });
     it('避免js浮点运算精度问题');
     it('原矩阵不变');
     it('返回新的矩阵');
