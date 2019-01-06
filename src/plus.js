@@ -18,6 +18,7 @@ Matrix.add = Matrix.plus = function(...args){
  * @return {Matrix}
  * **/
 Matrix.prototype.add = Matrix.prototype.plus = function(...args){
+  if(args.length < 1) _throwArgumentsError('must have at least one argument');
   return Matrix.add(this, ...args);
 };
 

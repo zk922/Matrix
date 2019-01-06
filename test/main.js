@@ -12,7 +12,7 @@ let mocha = new Mocha({
 /**======================= 添加测试用例文件 ===========================**/
 mocha.addFile(__dirname + '/constructor.test.js');
 mocha.addFile(__dirname + '/operation.test.js');
-// mocha.addFile(__dirname + '/computation.test.js');
+mocha.addFile(__dirname + '/plus-minus.test.js');
 
 
 /**======================= 添加测试用例文件end ===========================**/

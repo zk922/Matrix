@@ -8,7 +8,8 @@ const {_throwArgumentsError} = require('./utils');
  * @return {boolean}
  * **/
 Matrix.equal = Matrix.eq = function (a, b) {
-  if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError();
+  if(arguments.length < 2) _throwArgumentsError('must have two arguments');
+  if(!(a instanceof Matrix) || !(b instanceof Matrix)) _throwArgumentsError('arguments type must be Matrix');
   if(a.column !== b.column || a.row !== b.row) return false;
 
   let getItem = Matrix.prototype.getItem;
@@ -26,5 +27,6 @@ Matrix.equal = Matrix.eq = function (a, b) {
  * @return {boolean}
  * **/
 Matrix.prototype.equal = Matrix.prototype.eq = function(matrix){
+  if(arguments.length < 1) _throwArgumentsError('must have one argument');
   return Matrix.equal(this, matrix);
 };
